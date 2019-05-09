@@ -12,6 +12,7 @@ class App extends Component {
     this.state = {
       posts: [],
       subReddit: "",
+      lastOne: "",
       isFullScreen: false
     };
   }
@@ -55,6 +56,7 @@ class App extends Component {
 
     const onKeyPress = e => {
       if (e.key === "Enter") {
+        this.setState({posts: [], lastOne:""});
         this.fillWithPics();
       }
     };
@@ -91,17 +93,22 @@ class App extends Component {
     }
   };
 
-  fillWithPics = () => {
-    Api.fetchPics(this.state.subReddit).then(resp => {
-      if (resp.data) {
-        const posts = resp.data.children
+  makeStuff = (resp) => {
+    if (resp.data) {
+      const posts = resp.data.children
           .map(post => {
             return this.constructComponent({ url: post.data.url, name: post.data.name, raw_data: post.data });
           });
-        this.setState({
-          posts: posts
-        });
-      }
+      const last = resp.data.children.slice(-1)[0];
+      this.setState({
+        posts: [...this.state.posts, ...posts],
+        lastOne: last? last.data.name: '',
+      });
+    }
+  };
+  fillWithPics = () => {
+    Api.fetchPics(this.state.subReddit).then(resp => {
+      this.makeStuff(resp);
     });
   };
 
@@ -110,24 +117,15 @@ class App extends Component {
   };
 
   onCloseBtnClick = () => {
-    this.setState({posts: [], subReddit:""})
+    this.setState({posts: [], subReddit:"", lastOne:""})
   };
 
   loadMorePosts = () => {
     Api.fetchMorePics(
       this.state.subReddit,
-      this.state.posts[this.state.posts.length - 1].name
+      this.state.lastOne
     ).then(resp => {
-      if (resp.data) {
-        const posts = resp.data.children
-          .map(post => {
-            return { url: post.data.url, name: post.data.name };
-          })
-          .filter(o => isImage.test(o.url.toString()));
-        this.setState({
-          posts: [...this.state.posts, ...posts]
-        });
-      }
+      this.makeStuff(resp);
     });
   };
 
