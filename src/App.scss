@@ -1,4 +1,4 @@
-$background: #2C3D4B;
+$background: black;
 $accent: #75DDDD;
 $comps: #508991;
 $text-color: #004346;
@@ -19,16 +19,12 @@ html, body {
 }
 
 .top-bar {
-  border-bottom: 2px solid $comps;
-  border-left: 2px solid $comps;
-  border-right: 2px solid $comps;
-  border-radius: 4px;
   display: flex;
-  padding: 10px;
-  padding-top: 15px;
+  padding: 15px 10px 10px 10px;
+  height: 50px;
   margin-top: -5px;
   margin-bottom: 15px;
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
   justify-content: center;
   box-shadow: 0 2px 8px black;
 
@@ -39,15 +35,14 @@ html, body {
   flex-flow: row nowrap;
   align-content: center;
   justify-content: center;
-  height: 50px;
-  margin-bottom: 10px;
   border: 2px solid $comps;
   background-color: $background;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
+  margin-right: 10px;
   border-radius: 4px;
   color: white;
-  //font-size: 28px;
+  max-height: 50px;
   transition: border-bottom-color 0.2s ease-out;
   input {
     width: 100%;
@@ -63,16 +58,12 @@ html, body {
   border: 2px solid $hover;
   transition: border-bottom-color 0.2s ease-out;
 }
-/*.r {*/
-  /*line-height: 40px;*/
-/*}*/
 
 .top-bar__input {
   border: none;
   background-color: $background;
   padding-left: 3px;
   line-height: 40px;
-
   color: white;
   font-size: 21px;
 }
@@ -83,15 +74,12 @@ html, body {
 
 
 .top-bar__btn {
-  //max-width: 78%;
   height: 50px;
   padding: 0 15px;
   background: $comps;
   color: $text-color;
   font-size: 21px;
   line-height: 47px;
-
-
 }
 
 .item-container {
@@ -127,7 +115,6 @@ img{
 /*}*/
 
 top-bar__btn .load-more__btn {
-
   align-self: center;
 }
 
@@ -180,4 +167,10 @@ top-bar__btn .load-more__btn {
   font-weight: 800;
   line-height: 40px;
   background-color: $comps;
+}
+
+.gfycat__container {
+  position: relative;
+  padding-bottom: 170.25%;
+  width: 80%;
 }

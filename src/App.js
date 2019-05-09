@@ -3,6 +3,7 @@ import "./App.scss";
 
 const Api = require("./api");
 const isImage = new RegExp("\\.(gif|jpg|jpeg|tiff|png)$");
+const isGfyCat = new RegExp("gfycat");
 
 class App extends Component {
   constructor(props) {
@@ -14,6 +15,10 @@ class App extends Component {
       isFullScreen: false
     };
   }
+
+  // componentDidMount() {
+  //   this.fillWithPics();
+  // }
 
   goFullScreen = () => {
     this.setState({isFullScreen: !this.state.isFullScreen});
@@ -72,14 +77,27 @@ class App extends Component {
     );
   };
 
+  constructComponent = (post) => {
+    if (isImage.test(post.url.toString())) {
+      return <div key={post.name} className="item">
+        <img src={post.url} alt="pic here" />
+      </div>;
+    } else if (isGfyCat.test(post.url.toString())) {
+        const baseUrl = post.url.toString().replace('https://gfycat.com/', 'https://gfycat.com/ifr/');
+        const params = '&autoplay=0&hd=1&controls=1';
+
+      return <div className="gfycat__container">
+        <iframe title={post.name} src={baseUrl.concat(params)}  frameborder='0' allowfullscreen width='100%' height='100%' style={{position:'absolute', top:0, left: 0}}/></div>
+    }
+  };
+
   fillWithPics = () => {
     Api.fetchPics(this.state.subReddit).then(resp => {
       if (resp.data) {
         const posts = resp.data.children
           .map(post => {
-            return { url: post.data.url, name: post.data.name };
-          })
-          .filter(o => isImage.test(o.url.toString()));
+            return this.constructComponent({ url: post.data.url, name: post.data.name, raw_data: post.data });
+          });
         this.setState({
           posts: posts
         });
@@ -119,12 +137,8 @@ class App extends Component {
         {this.topBar()}
 
         <div className="item-container">
-          {this.state.posts.map(posts => {
-            return (
-              <div key={posts.name} className="item">
-                <img src={posts.url} alt="pic here" />
-              </div>
-            );
+          {this.state.posts.map(postComponent => {
+            return (postComponent);
           })}
         </div>
         {this.state.posts.length > 1 ? (
