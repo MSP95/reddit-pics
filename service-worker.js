@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/reddit-pics/precache-manifest.3f7e5936d848f9923ec07b9000e0b98a.js"
+  "/reddit-pics/precache-manifest.3128cff0d0c8486ef54d4646c9478d22.js"
 );
 
 workbox.clientsClaim();
