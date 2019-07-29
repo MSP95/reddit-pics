@@ -4,6 +4,13 @@ $comps: #508991;
 $text-color: #004346;
 $hover: #09BC8A;
 
+@mixin flexPreset($flow: row wrap, $align-items: flex-start, $justify-content: flex-start) {
+  display: flex;
+  flex-flow: $flow;
+  align-items: $align-items;
+  justify-content: $justify-content;
+}
+
 .App {
   text-align: center;
   display: flex;
@@ -25,25 +32,33 @@ html, body {
   margin-top: -5px;
   margin-bottom: 15px;
   flex-flow: row nowrap;
-  justify-content: center;
-  box-shadow: 0 2px 8px black;
+  justify-content: flex-end;
+  //box-shadow: 0 2px 8px black;
+  position: fixed;
+  top: 0;
+  right: 0;
+  //width: 0;
 
-  width: 80%;
 }
 .top-bar__search {
   display: flex;
   flex-flow: row nowrap;
   align-content: center;
   justify-content: center;
-  border: 2px solid $comps;
-  background-color: $background;
+  background-color: lighten($background, 20%);
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   margin-right: 10px;
   border-radius: 4px;
   color: white;
   max-height: 50px;
-  transition: border-bottom-color 0.2s ease-out;
+  transition: border-bottom-color 0.2s ease-out, width 0.2s ease-out;
+  width: 0%;
+  overflow: hidden;
+  &.active {
+    width: 100%;
+    transition: width 0.2s ease-out;
+  }
   input {
     width: 100%;
     padding-left: 10px;
@@ -55,13 +70,13 @@ html, body {
 
 .top-bar__search:hover {
   outline: #282c34;
-  border: 2px solid $hover;
   transition: border-bottom-color 0.2s ease-out;
 }
 
 .top-bar__input {
   border: none;
-  background-color: $background;
+  background-color: lighten($background, 20%);
+
   padding-left: 3px;
   line-height: 40px;
   color: white;
@@ -74,12 +89,14 @@ html, body {
 
 
 .top-bar__btn {
-  height: 50px;
-  padding: 0 15px;
+
+  @include flexPreset(row nowrap, center, center);
+  padding: 10px;
   background: $comps;
   color: $text-color;
-  font-size: 21px;
+  font-size: 28px;
   line-height: 47px;
+  opacity: 0.5;
 }
 
 .item-container {
@@ -90,8 +107,10 @@ html, body {
 }
 
 .item{
-  padding-bottom: 10px;
-  animation: example 500ms linear 1 normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: example 250ms linear 1 normal;
 }
 
 @keyframes example {
@@ -118,6 +137,16 @@ top-bar__btn .load-more__btn {
   align-self: center;
 }
 
+.load-more__btn {
+  border-radius: 50% !important;
+  height: 200px;
+  width: 200px;
+  color: white;
+  font-weight: 800;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}
 .btn {
   cursor: pointer;
   outline: none;
@@ -134,13 +163,17 @@ top-bar__btn .load-more__btn {
     outline: none;
     border:none;
     box-shadow: 0 0px 0px black;
-    transform: scale(0.9);
-    transition: transform 250ms;
+    //transform: scale(0.9);
+    //transition: transform 250ms;
 
   }
 
   &.close-btn {
+
+    display: flex;
+    align-items: center;
     background-color: transparent;
+    padding-right: 5px;
     box-shadow: none;
     color: $comps;
     font-size: 28px;
@@ -156,21 +189,22 @@ top-bar__btn .load-more__btn {
 
 
 .fs__btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: fixed;
   bottom: 10px;
   right: 10px;
   height: 40px;
   width: 40px;
-  font-size: 20px;
+  font-size: 40px;
   padding: 2px 2px;
   color: $text-color;
-  font-weight: 800;
-  line-height: 40px;
   background-color: $comps;
 }
 
 .gfycat__container {
   position: relative;
-  padding-bottom: 170.25%;
+  padding-bottom: 50%;
   width: 80%;
 }

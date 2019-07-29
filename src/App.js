@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.scss";
-
+import {MdClose, MdFullscreen, MdSearch} from "react-icons/md";
+import Swiper from './swiper'
 const Api = require("./api");
 const isImage = new RegExp("\\.(gif|jpg|jpeg|tiff|png)$");
 const isGfyCat = new RegExp("gfycat");
@@ -13,13 +14,16 @@ class App extends Component {
       posts: [],
       subReddit: "",
       lastOne: "",
-      isFullScreen: false
+      isFullScreen: false,
+      showBar: true
     };
   }
 
-  // componentDidMount() {
-  //   this.fillWithPics();
-  // }
+  componentDidMount() {
+    window.onclick =  ()=> {
+      this.setState({showBar: false})
+    };
+  }
 
   goFullScreen = () => {
     this.setState({isFullScreen: !this.state.isFullScreen});
@@ -61,8 +65,8 @@ class App extends Component {
       }
     };
     return (
-      <div className="top-bar">
-        <div className="top-bar__search">
+      <div className="top-bar" onClick={e => e.stopPropagation()}>
+        <div className={`top-bar__search ${this.state.showBar? 'active': ''}`}>
           <input
             className="top-bar__input"
             onChange={onChange}
@@ -70,23 +74,23 @@ class App extends Component {
             value={this.state.subReddit}
             placeholder="Enter a subReddit"
           />
-          <button className="btn close-btn" onClick={this.onCloseBtnClick} >X</button>
+          <div className="btn close-btn" onClick={this.onCloseBtnClick} ><MdClose/> </div>
         </div>
-        <button className="btn top-bar__btn " onClick={this.onBtnClick}>
-          Get Pics!
-        </button>
+        <div className="btn top-bar__btn " onClick={this.onBtnClick}>
+          <MdSearch/>
+        </div>
       </div>
     );
   };
 
   constructComponent = (post) => {
-    if (isImage.test(post.url.toString())) {
+    if (isImage.test(post.url.toString())){
       return <div key={post.name} className="item">
         <img src={post.url} alt="pic here" />
       </div>;
     } else if (isGfyCat.test(post.url.toString())) {
         const baseUrl = post.url.toString().replace('https://gfycat.com/', 'https://gfycat.com/ifr/');
-        const params = '&autoplay=0&hd=1&controls=1';
+        const params = baseUrl.indexOf('?') !== -1? '&autoplay=0&hd=1&controls=1':'?autoplay=0&hd=1&controls=1';
 
       return <div className="gfycat__container">
         <iframe title={post.name} src={baseUrl.concat(params)}  frameborder='0' allowfullscreen width='100%' height='100%' style={{position:'absolute', top:0, left: 0}}/></div>
@@ -107,20 +111,29 @@ class App extends Component {
     }
   };
   fillWithPics = () => {
-    Api.fetchPics(this.state.subReddit).then(resp => {
+     return Api.fetchPics(this.state.subReddit).then(resp => {
       this.makeStuff(resp);
     });
   };
 
-  onBtnClick = () => {
-    this.fillWithPics();
+  onBtnClick = (e) => {
+    e.stopPropagation();
+    if (this.state.showBar) {
+
+      this.fillWithPics();
+
+    } else {
+      this.setState({showBar: true});
+    }
+
   };
 
   onCloseBtnClick = () => {
     this.setState({posts: [], subReddit:"", lastOne:""})
   };
 
-  loadMorePosts = () => {
+  loadMorePosts = (e) => {
+    e.stopPropagation();
     Api.fetchMorePics(
       this.state.subReddit,
       this.state.lastOne
@@ -135,20 +148,22 @@ class App extends Component {
         {this.topBar()}
 
         <div className="item-container">
-          {this.state.posts.map(postComponent => {
+          <Swiper>
+          {[...this.state.posts.map(postComponent => {
             return (postComponent);
-          })}
+          }).filter(pc => pc),  this.state.posts.length > 1 ? (
+                <div
+                    className="btn top-bar__btn load-more__btn"
+                    onClick={this.loadMorePosts}
+                >
+                  {" "}
+                  Load more{" "}
+                </div>
+            ) : null]}
+          </Swiper>
         </div>
-        {this.state.posts.length > 1 ? (
-          <div
-            className="btn top-bar__btn load-more__btn"
-            onClick={this.loadMorePosts}
-          >
-            {" "}
-            Load more{" "}
-          </div>
-        ) : null}
-        <div className='btn fs__btn' onClick={this.goFullScreen}> {'< >'} </div>
+
+        <div className='btn fs__btn' onClick={this.goFullScreen}> <MdFullscreen/> </div>
       </div>
     );
   }
