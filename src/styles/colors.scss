@@ -1,0 +1,8 @@
+$background-gradient: linear-gradient(135deg, rgba(18, 18, 18, 0.09) 0%, rgba(18, 18, 18, 0.09) 67%,rgba(202, 202, 202, 0.09) 67%, rgba(202, 202, 202, 0.09) 100%),linear-gradient(135deg, rgba(207, 207, 207, 0.17) 0%, rgba(207, 207, 207, 0.17) 30%,rgba(164, 164, 164, 0.17) 30%, rgba(164, 164, 164, 0.17) 100%),linear-gradient(45deg, rgb(54, 31, 124) 0%, rgb(54, 31, 124) 12.5%,rgb(55, 59, 128) 12.5%, rgb(55, 59, 128) 25%,rgb(56, 88, 132) 25%, rgb(56, 88, 132) 37.5%,rgb(57, 116, 136) 37.5%, rgb(57, 116, 136) 50%,rgb(57, 145, 141) 50%, rgb(57, 145, 141) 62.5%,rgb(58, 173, 145) 62.5%, rgb(58, 173, 145) 75%,rgb(59, 202, 149) 75%, rgb(59, 202, 149) 87.5%,rgb(60, 230, 153) 87.5%, rgb(60, 230, 153) 100%);
+$background: black;
+$accent: #75DDDD;
+$comps: #508991;
+$text-color: #004346;
+$hover: #09BC8A;
+$modal-background: transparentize($background, 0.6);
+$overlay-background: transparentize($background, 0.2);
