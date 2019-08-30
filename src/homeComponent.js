@@ -5,8 +5,13 @@ import Swiper from './swiper'
 import Api from "./api";
 import {inject, observer} from "mobx-react";
 import SearchBar from "./components/searchBar/searchBar";
+import Image from "./components/image/image";
 const isImage = new RegExp("\\.(gif|jpg|jpeg|tiff|png)$");
 const isGfyCat = new RegExp("gfycat");
+
+function Banner(props) {
+  return (<div className={props.className}>Reddit Pics</div>)
+}
 
 @inject("stores")
 @observer
@@ -48,7 +53,7 @@ class HomeComponent extends Component {
   constructComponent = (post) => {
     if (isImage.test(post.url.toString())){
       return <div key={post.name} className="item">
-        <img src={post.url} alt="pic here" />
+        <Image src={post.url} alt="Could Not Load Image" />
       </div>;
     } else if (isGfyCat.test(post.url.toString())) {
         const baseUrl = post.url.toString().replace('https://gfycat.com/', 'https://gfycat.com/ifr/');
@@ -94,19 +99,17 @@ class HomeComponent extends Component {
     const { HomePageStore } = this.props.stores;
     return (
       <div className="homeComponent">
+        {!HomePageStore.atLeastOnePost? <Banner className="homeComponent__banner"/>:null}
         <SearchBar onSearch={this.fillWithPics.bind(this)}/>
         <div className="item-container">
           <Swiper>
           {[...HomePageStore.posts.map(postComponent => {
             return this.constructComponent(postComponent);
-          }).filter(pc => pc),  HomePageStore.posts.length > 1 ? (
-                <div
-                    className="btn top-bar__btn load-more__btn"
-                    onClick={this.loadMorePosts}
-                >
-                  {" "}
-                  Load more{" "}
-                </div>
+          }).filter(pc => pc),  HomePageStore.atLeastOnePost ? (
+              <div
+                  className="loadMore__btn"
+                  onClick={this.loadMorePosts}
+              >Load more</div>
             ) : null]}
           </Swiper>
         </div>

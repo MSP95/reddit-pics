@@ -4,6 +4,7 @@ import { MdClose, MdSearch } from "react-icons/md";
 import {IoLogoReddit} from "react-icons/io";
 import { inject, observer } from "mobx-react";
 import PropTypes from "prop-types";
+import ClassNames from "classnames";
 
 @inject("stores")
 @observer
@@ -46,11 +47,11 @@ class SearchBar extends Component {
       }
     };
     return (
-      <div className="top-bar" onClick={e => e.stopPropagation()}>
+      <div className={ClassNames('top-bar', {'top-bar--fixed': HomePageStore.atLeastOnePost})} onClick={e => e.stopPropagation()}>
         <div className="top-bar__searchBar">
           <div
             className={`top-bar__searchBar__search ${
-              HomePageStore.showBar ? "active" : ""
+              HomePageStore.showBar || !HomePageStore.atLeastOnePost ? "active" : ""
             }`}
           >
             <input

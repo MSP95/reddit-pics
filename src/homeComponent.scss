@@ -3,6 +3,13 @@
 .homeComponent {
   height: 100%;
   width: 100%;
+  @include flexPreset(column nowrap, center, center);
+
+  &__banner {
+    font-size: 48px;
+    color: white;
+    font-family: 'Fjalla One', sans-serif;
+  }
 }
 
 .item-container {
@@ -10,8 +17,8 @@
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  //width: 100%;
+  //height: 100%;
 }
 
 .item{
@@ -41,19 +48,30 @@ img{
 /*transition: all 250ms;*/
 /*}*/
 
-top-bar__btn .load-more__btn {
+top-bar__btn {
   align-self: center;
 }
 
-.load-more__btn {
+.loadMore__btn {
   border-radius: 50% !important;
   height: 200px;
   width: 200px;
-  color: white;
+  background-color: $accent;
+  color: $text-color-dark;
   font-weight: 800;
   display: flex;
+  font-size: 24px;
   justify-content: center;
+  align-items: center;
   align-self: center;
+  transition: all 250ms ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken($accent, 5%);
+    color: $c-white;
+    transition: all 250ms ease-in-out;
+  }
 }
 .btn {
   cursor: pointer;

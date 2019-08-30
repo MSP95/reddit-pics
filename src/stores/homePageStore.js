@@ -1,4 +1,4 @@
-import {observable, action} from 'mobx';
+import {observable, action, computed} from 'mobx';
 import Api from "../api";
 
 class HomePageStore {
@@ -12,6 +12,10 @@ class HomePageStore {
     @observable isFullScreen = false;
     @observable subRedditAutoComplete = [];
 
+    @computed
+    get atLeastOnePost() {
+        return this.posts.length > 1;
+    }
     @action
     onChangeSearchInputValue(value) {
         this.searchInputValue = value;

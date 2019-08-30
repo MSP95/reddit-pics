@@ -1,15 +1,16 @@
 @import "../../App";
 .top-bar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  //width: 0;
   margin-top: -5px;
-  margin-bottom: 15px;
+  margin-bottom: 250px;
   z-index: 999999999;
-  flex-flow: column nowrap;
   padding: 15px 10px 10px 10px;
+  position: relative;
 
+  &--fixed {
+    position: fixed;
+    top: 0;
+    right: 0;
+  }
   &__searchBar {
     display: flex;
     height: 50px;
@@ -20,9 +21,13 @@
   }
 
   &__autoComplete {
+    position: absolute;
+    top: 75px;
+    left: 0;
+    right: 0;
+    margin: 15px;
     display: flex;
     flex-flow: column nowrap;
-    width: 100%;
     border-radius: 4px;
     color: white;
     background-color: $modal-background;
@@ -83,14 +88,14 @@
 .top-bar__searchBar__search__input {
   border: none;
   background-color: transparent;
-
+  font-family: "Noto Sans JP", sans-serif;
   padding-left: 3px;
   line-height: 40px;
   color: white;
   font-size: 21px;
-
+  outline: none;
   &::placeholder {
-    color: darken(white, 20%);
+    color: darken($c-white, 20%);
   }
 }
 

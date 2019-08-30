@@ -1,0 +1,12 @@
+@import "../../App";
+
+.image {
+  .imgTag {
+    opacity: 0;
+    background: transparent;
+    &--active {
+      opacity: 1;
+      transition: opacity 250ms ease-out;
+    }
+  }
+}
